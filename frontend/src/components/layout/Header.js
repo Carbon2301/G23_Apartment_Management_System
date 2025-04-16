@@ -556,51 +556,6 @@ const Header = () => {
                 </LinkContainer>
               )}
               
-              {/* Admin Menu */}
-              {isAdmin() && (
-                <NavDropdown 
-                  title={<span><i className="bi bi-shield-lock me-1"></i>Quản trị hệ thống</span>} 
-                  id="adminmenu" 
-                  className="nav-link-custom"
-                  align="end"
-                >
-                  <NavDropdown.Header>Quản lý người dùng</NavDropdown.Header>
-                  <LinkContainer to="/users">
-                    <NavDropdown.Item><i className="bi bi-people me-2"></i>Danh sách người dùng</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/users/roles">
-                    <NavDropdown.Item><i className="bi bi-person-badge me-2"></i>Phân quyền</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/users/activity-log">
-                    <NavDropdown.Item><i className="bi bi-journal-text me-2"></i>Nhật ký hoạt động</NavDropdown.Item>
-                  </LinkContainer>
-                  
-                  <NavDropdown.Divider />
-                  <NavDropdown.Header>Hệ thống</NavDropdown.Header>
-                  <LinkContainer to="/admin/system-config">
-                    <NavDropdown.Item><i className="bi bi-gear me-2"></i>Cấu hình hệ thống</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/backup">
-                    <NavDropdown.Item><i className="bi bi-cloud-upload me-2"></i>Sao lưu dữ liệu</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/maintenance">
-                    <NavDropdown.Item><i className="bi bi-tools me-2"></i>Bảo trì hệ thống</NavDropdown.Item>
-                  </LinkContainer>
-                  
-                  <NavDropdown.Divider />
-                  <NavDropdown.Header>Báo cáo & Thống kê</NavDropdown.Header>
-                  <LinkContainer to="/admin/reports">
-                    <NavDropdown.Item><i className="bi bi-graph-up me-2"></i>Báo cáo tổng hợp</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/analytics">
-                    <NavDropdown.Item><i className="bi bi-bar-chart me-2"></i>Phân tích dữ liệu</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/audit-trail">
-                    <NavDropdown.Item><i className="bi bi-file-text me-2"></i>Kiểm toán hệ thống</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
-              )}
-              
               {/* Manager Menu */}
               {isManager() && (
                 <NavDropdown 
@@ -635,53 +590,6 @@ const Header = () => {
         </Container>
       </Navbar>
 
-      {/* Quick Search Modal */}
-      <Modal show={showSearch} onHide={() => setShowSearch(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title><i className="bi bi-search me-2"></i>Tìm kiếm nhanh</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleSearchSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder="Tìm kiếm cư dân, căn hộ, phương tiện..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                autoFocus
-                size="lg"
-              />
-            </Form.Group>
-            <div className="d-flex gap-2">
-              <Button variant="primary" type="submit" disabled={!searchQuery.trim()}>
-                <i className="bi bi-search me-1"></i>Tìm kiếm
-              </Button>
-              <Button variant="outline-secondary" onClick={() => setShowSearch(false)}>
-                Hủy
-              </Button>
-            </div>
-          </Form>
-          
-          <hr />
-          <div>
-            <h6>Tìm kiếm gần đây:</h6>
-            <div className="d-flex flex-wrap gap-1">
-              {['Căn hộ A101', 'Nguyễn Văn A', 'Phí tháng 11'].map((term, index) => (
-                <Button 
-                  key={index}
-                  variant="outline-secondary" 
-                  size="sm"
-                  onClick={() => setSearchQuery(term)}
-                >
-                  {term}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-      
     </>
   );
 };
