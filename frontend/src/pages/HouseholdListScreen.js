@@ -184,7 +184,6 @@ const HouseholdListScreen = () => {
     if (savedPrefs) {
       const prefs = JSON.parse(savedPrefs);
       setViewMode(prefs.viewMode || 'table');
-      setItemsPerPage(prefs.itemsPerPage || 20);
       setAdvancedFilters(prev => ({ ...prev, ...prefs.filters }));
     }
   };
@@ -242,10 +241,6 @@ const HouseholdListScreen = () => {
     setNotifications(prev => prev.filter(n => n.id !== id));
   };
   
-  const deleteHandler = async (id) => {
-    setDeleteId(id);
-    setShowConfirm(true);
-  };
   
   const handleConfirmDelete = async () => {
     setShowConfirm(false);
@@ -378,50 +373,6 @@ const HouseholdListScreen = () => {
     });
     
     setFilteredHouseholds(filtered);
-  };
-
-  // Calculate comprehensive statistics
-  const calculateStatistics = () => {
-    const stats = {
-      total: households.length,
-      active: households.filter(h => h.active).length,
-      inactive: households.filter(h => !h.active).length,
-      byBuilding: {},
-      byFloor: {},
-      monthlyTrends: []
-    };
-    
-    // Building distribution
-    households.forEach(h => {
-      const building = h.building || 'Unknown';
-      stats.byBuilding[building] = (stats.byBuilding[building] || 0) + 1;
-    });
-    
-    // Floor distribution
-    households.forEach(h => {
-      const floor = h.floor || 'Unknown';
-      stats.byFloor[floor] = (stats.byFloor[floor] || 0) + 1;
-    });
-    
-    // Monthly trends (last 12 months)
-    for (let i = 11; i >= 0; i--) {
-      const date = new Date();
-      date.setMonth(date.getMonth() - i);
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      
-      const monthlyCount = households.filter(h => {
-        const createdDate = new Date(h.createdAt);
-        const createdMonthKey = `${createdDate.getFullYear()}-${String(createdDate.getMonth() + 1).padStart(2, '0')}`;
-        return createdMonthKey === monthKey;
-      }).length;
-      
-      stats.monthlyTrends.push({
-        month: date.toLocaleDateString('vi-VN', { month: 'short', year: '2-digit' }),
-        count: monthlyCount
-      });
-    }
-    
-    setStatistics(stats);
   };
 
   // Activity logging
@@ -637,9 +588,6 @@ const HouseholdListScreen = () => {
       }, config);
       
       addNotification(`Đã import thành công ${data.imported} hộ gia đình`, 'success');
-      setShowImportModal(false);
-      setImportData([]);
-      fetchHouseholds();
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Lỗi khi import dữ liệu';
       addNotification(errorMessage, 'error');
@@ -730,16 +678,6 @@ const HouseholdListScreen = () => {
                   <h1 className="mb-2 fw-bold text-white" style={{ fontSize: '2.5rem', textShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
                     Quản Lý Hộ Gia Đình
                   </h1>
-                  <p className="mb-0 text-white" style={{ fontSize: '16px', opacity: '0.9' }}>
-                    <i className="bi bi-house-door me-2"></i>
-                    Tổng cộng {filteredHouseholds.length} hộ gia đình
-                    {selectedHouseholds.length > 0 && (
-                      <span className="ms-3">
-                        <i className="bi bi-check-square me-1"></i>
-                        Đã chọn {selectedHouseholds.length}
-                      </span>
-                    )}
-                  </p>
                   
                   {/* Real-time status indicators */}
                   <div className="d-flex gap-3 mt-2">
@@ -916,10 +854,6 @@ const HouseholdListScreen = () => {
             <div className="toast-header border-0 bg-transparent">
               <i className={`bi bi-${notification.type === 'success' ? 'check-circle' : 
                                   notification.type === 'error' ? 'exclamation-triangle' : 'info-circle'} me-2`}></i>
-              <strong className="me-auto">
-                {notification.type === 'success' ? 'Thành công' : 
-                 notification.type === 'error' ? 'Lỗi' : 'Thông báo'}
-              </strong>
               <small>{notification.timestamp.toLocaleTimeString('vi-VN')}</small>
               <button
                 type="button"
@@ -940,12 +874,6 @@ const HouseholdListScreen = () => {
           <Card className="shadow-lg border-0">
             <Card.Header className="bg-primary text-white">
               <Row className="align-items-center">
-                <Col>
-                  <h5 className="mb-0">
-                    <i className="bi bi-graph-up me-2"></i>
-                    Dashboard Thống Kê
-                  </h5>
-                </Col>
                 <Col xs="auto">
                   <Button
                     variant="outline-light"
@@ -1220,7 +1148,6 @@ const HouseholdListScreen = () => {
         <div style={{
           background: 'rgba(255,255,255,0.95)',
           backdropFilter: 'blur(15px)',
-          borderRadius: '20px',
           padding: '0',
           border: '1px solid rgba(255,255,255,0.2)',
           boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
@@ -1268,18 +1195,6 @@ const HouseholdListScreen = () => {
                       </th>
                       <th className="fw-bold py-3 border-0" style={{ color: '#2d3748' }}>
                         <i className="bi bi-geo-alt me-2"></i>Địa Chỉ
-                      </th>
-                      <th className="fw-bold text-center py-3 border-0" style={{ color: '#2d3748' }}>
-                        <i className="bi bi-ruler-combined me-2"></i>Diện Tích
-                      </th>
-                      <th className="fw-bold py-3 border-0" style={{ color: '#2d3748' }}>
-                        <i className="bi bi-person-badge me-2"></i>Chủ Hộ
-                      </th>
-                      <th className="fw-bold text-center py-3 border-0" style={{ color: '#2d3748', minWidth: '130px' }}>
-                        <i className="bi bi-activity me-2"></i>Trạng Thái
-                      </th>
-                      <th className="fw-bold text-center py-3 border-0" style={{ color: '#2d3748' }}>
-                        <i className="bi bi-gear me-2"></i>Thao Tác
                       </th>
                     </tr>
                   </thead>
@@ -1339,8 +1254,6 @@ const HouseholdListScreen = () => {
                             padding: '6px 12px',
                             display: 'inline-block',
                             color: 'white',
-                            fontWeight: 'bold',
-                            fontSize: '14px',
                             boxShadow: '0 3px 10px rgba(255, 154, 86, 0.3)'
                           }}>
                             <i className="bi bi-aspect-ratio me-1"></i>
@@ -1400,12 +1313,6 @@ const HouseholdListScreen = () => {
                                 boxShadow: '0 3px 8px rgba(149, 165, 166, 0.3)'
                               }}>
                                 <i className="bi bi-person-dash text-white" style={{ fontSize: '1.1rem' }}></i>
-                              </div>
-                              <div>
-                                <div className="text-muted fw-medium">Chưa có chủ hộ</div>
-                                <small className="text-warning">
-                                  <i className="bi bi-exclamation-triangle me-1"></i>Cần chỉ định
-                                </small>
                               </div>
                             </div>
                           )}
@@ -1577,14 +1484,6 @@ const HouseholdListScreen = () => {
                       >
                         <i className="bi bi-chevron-right"></i>
                       </Button>
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        disabled={currentPage === totalPages}
-                        onClick={() => handlePageChange(totalPages)}
-                      >
-                        <i className="bi bi-chevron-double-right"></i>
-                      </Button>
                     </div>
                   </div>
                 </Col>
@@ -1632,7 +1531,6 @@ const HouseholdListScreen = () => {
                       <th>Căn hộ</th>
                       <th>Địa chỉ</th>
                       <th>Diện tích</th>
-                      <th>Trạng thái</th>
                       <th>Ghi chú</th>
                     </tr>
                   </thead>
@@ -1705,8 +1603,6 @@ const HouseholdListScreen = () => {
             top: '100px',
             right: '20px',
             width: '300px',
-            zIndex: 1000,
-            maxHeight: '70vh',
             overflowY: 'auto'
           }}
         >
@@ -1774,34 +1670,12 @@ const HouseholdListScreen = () => {
               <Col md={4}>
                 <div className="d-flex align-items-center gap-2">
                   <Form.Check
-                    type="checkbox"
-                    id="selectAll"
                     checked={selectedHouseholds.length === filteredHouseholds.length && filteredHouseholds.length > 0}
                     onChange={handleSelectAllHouseholds}
                   />
                   <label htmlFor="selectAll" className="form-label mb-0">
                     Chọn tất cả
                   </label>
-                </div>
-              </Col>
-              <Col md={4} className="text-center">
-                <div className="d-flex align-items-center justify-content-center gap-3">
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => setViewMode(viewMode === 'table' ? 'card' : 'table')}
-                  >
-                    <i className={`bi bi-${viewMode === 'table' ? 'grid' : 'table'} me-1`}></i>
-                    {viewMode === 'table' ? 'Dạng thẻ' : 'Dạng bảng'}
-                  </Button>
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
-                  >
-                    <i className="bi bi-search me-1"></i>
-                    Tìm kiếm nâng cao
-                  </Button>
                 </div>
               </Col>
               <Col md={4} className="text-end">
@@ -1842,423 +1716,6 @@ const HouseholdListScreen = () => {
         loading={loading}
       />
 
-      {/* Custom CSS Styles */}
-      <style jsx>{`
-        .spin {
-          animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        .fade-in {
-          animation: fadeIn 0.5s ease-in;
-        }
-        
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .slide-in-left {
-          animation: slideInLeft 0.3s ease-out;
-        }
-        
-        @keyframes slideInLeft {
-          from { opacity: 0; transform: translateX(-100px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .bounce-in {
-          animation: bounceIn 0.6s ease;
-        }
-        
-        @keyframes bounceIn {
-          0% { opacity: 0; transform: scale(0.3); }
-          50% { opacity: 1; transform: scale(1.05); }
-          70% { transform: scale(0.9); }
-          100% { opacity: 1; transform: scale(1); }
-        }
-        
-        .table-hover tbody tr:hover {
-          background-color: rgba(102, 126, 234, 0.08) !important;
-          transform: translateY(-1px);
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .stat-card:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-          transition: all 0.3s ease;
-        }
-        
-        .trend-bar:hover {
-          transform: scale(1.1);
-          transition: all 0.2s ease;
-        }
-        
-        .pagination-controls .btn:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-        }
-        
-        .status-indicator .badge {
-          animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-          100% { transform: scale(1); }
-        }
-        
-        .toast {
-          animation: slideInRight 0.3s ease-out;
-        }
-        
-        @keyframes slideInRight {
-          from { opacity: 0; transform: translateX(100px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .card-hover {
-          transition: all 0.3s ease;
-        }
-        
-        .card-hover:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-        
-        .btn-gradient {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          border: none;
-          color: white;
-          transition: all 0.3s ease;
-        }
-        
-        .btn-gradient:hover {
-          background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .search-input:focus {
-          border-color: #667eea !important;
-          box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
-        }
-        
-        .loading-spinner {
-          border: 4px solid #f3f3f3;
-          border-top: 4px solid #667eea;
-          border-radius: 50%;
-          width: 40px;
-          height: 40px;
-          animation: spin 1s linear infinite;
-          margin: 0 auto;
-        }
-        
-        .progress-bar-animated {
-          background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
-          background-size: 200% 100%;
-          animation: progress-animation 2s linear infinite;
-        }
-        
-        @keyframes progress-animation {
-          0% { background-position: 200% 0; }
-          100% { background-position: -200% 0; }
-        }
-        
-        .notification-enter {
-          opacity: 0;
-          transform: translateX(100%);
-        }
-        
-        .notification-enter-active {
-          opacity: 1;
-          transform: translateX(0);
-          transition: all 0.3s ease-out;
-        }
-        
-        .notification-exit {
-          opacity: 1;
-          transform: translateX(0);
-        }
-        
-        .notification-exit-active {
-          opacity: 0;
-          transform: translateX(100%);
-          transition: all 0.3s ease-in;
-        }
-        
-        .glass-effect {
-          background: rgba(255, 255, 255, 0.25);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-        
-        .gradient-text {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-        
-        .button-float {
-          position: fixed;
-          bottom: 30px;
-          right: 30px;
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          border: none;
-          box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-          font-size: 24px;
-          transition: all 0.3s ease;
-          z-index: 1000;
-        }
-        
-        .button-float:hover {
-          transform: scale(1.1) rotate(90deg);
-          box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
-        }
-        
-        .table-row-selected {
-          background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
-          border-left: 4px solid #667eea;
-        }
-        
-        .modal-backdrop {
-          background: rgba(0, 0, 0, 0.7);
-          backdrop-filter: blur(5px);
-        }
-        
-        .modal-content {
-          border: none;
-          border-radius: 20px;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        
-        .badge-pulse {
-          animation: badge-pulse 2s infinite;
-        }
-        
-        @keyframes badge-pulse {
-          0% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.1); opacity: 0.8; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        
-        .data-visualization {
-          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-          border-radius: 15px;
-          padding: 20px;
-          color: white;
-          margin: 10px 0;
-        }
-        
-        .chart-container {
-          position: relative;
-          height: 300px;
-          margin: 20px 0;
-        }
-        
-        .chart-bar {
-          background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-          border-radius: 5px 5px 0 0;
-          transition: all 0.3s ease;
-        }
-        
-        .chart-bar:hover {
-          background: linear-gradient(180deg, #764ba2 0%, #667eea 100%);
-          transform: scale(1.05);
-        }
-        
-        .filter-chip {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          padding: 5px 15px;
-          border-radius: 20px;
-          font-size: 12px;
-          margin: 2px;
-          display: inline-block;
-          transition: all 0.3s ease;
-        }
-        
-        .filter-chip:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .activity-timeline {
-          position: relative;
-          padding-left: 30px;
-        }
-        
-        .activity-timeline::before {
-          content: '';
-          position: absolute;
-          left: 15px;
-          top: 0;
-          bottom: 0;
-          width: 2px;
-          background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .timeline-item {
-          position: relative;
-          margin-bottom: 20px;
-        }
-        
-        .timeline-item::before {
-          content: '';
-          position: absolute;
-          left: -23px;
-          top: 5px;
-          width: 12px;
-          height: 12px;
-          background: #667eea;
-          border-radius: 50%;
-          border: 2px solid white;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        .export-progress {
-          background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-          border-radius: 10px;
-          padding: 10px;
-          color: white;
-          margin: 10px 0;
-        }
-        
-        .import-preview {
-          max-height: 400px;
-          overflow-y: auto;
-          border: 2px dashed #667eea;
-          border-radius: 10px;
-          padding: 20px;
-          background: rgba(102, 126, 234, 0.05);
-        }
-        
-        .statistics-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 20px;
-          margin: 20px 0;
-        }
-        
-        .statistic-card {
-          background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-          border-radius: 15px;
-          padding: 25px;
-          text-align: center;
-          transition: all 0.3s ease;
-          border: 1px solid rgba(102, 126, 234, 0.2);
-        }
-        
-        .statistic-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
-          background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-        }
-        
-        .advanced-search-form {
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
-          backdrop-filter: blur(10px);
-          border-radius: 20px;
-          padding: 30px;
-          margin: 20px 0;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .bulk-actions-panel {
-          background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-          border-radius: 15px;
-          padding: 15px;
-          margin: 20px 0;
-          border: 2px solid rgba(255, 183, 77, 0.3);
-        }
-        
-        .recent-activities-panel {
-          position: fixed;
-          top: 20%;
-          right: 20px;
-          width: 320px;
-          max-height: 60vh;
-          overflow-y: auto;
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(15px);
-          border-radius: 20px;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-          z-index: 1000;
-        }
-        
-        .table-responsive-custom {
-          border-radius: 20px;
-          overflow: hidden;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .table-header-custom {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          padding: 20px 30px;
-        }
-        
-        .pagination-custom {
-          background: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(10px);
-          border-radius: 15px;
-          padding: 15px;
-          margin: 20px 0;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .view-mode-toggle {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          border: none;
-          color: white;
-          padding: 10px 20px;
-          border-radius: 25px;
-          transition: all 0.3s ease;
-        }
-        
-        .view-mode-toggle:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-          background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-        }
-        
-        .search-suggestions {
-          position: absolute;
-          top: 100%;
-          left: 0;
-          right: 0;
-          background: white;
-          border: 1px solid #ddd;
-          border-radius: 10px;
-          box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-          z-index: 1000;
-          max-height: 200px;
-          overflow-y: auto;
-        }
-        
-        .search-suggestion-item {
-          padding: 10px 15px;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-        
-        .search-suggestion-item:hover {
-          background: rgba(102, 126, 234, 0.1);
-          color: #667eea;
-        }
-      `}</style>
     </div>
   );
 };
