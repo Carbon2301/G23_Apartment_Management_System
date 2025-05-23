@@ -1,0 +1,598 @@
+/* === Custom Bootstrap Theme: Black & White Minimalist === */
+:root {
+  --bs-primary: #444a50;
+  --bs-primary-rgb: 33,37,41;
+  --bs-link-color: #212529;
+  --bs-link-hover-color: #495057;
+  --bs-info: #6c757d;
+  --bs-info-rgb: 108,117,125;
+  --bs-btn-bg: #212529;
+  --bs-btn-border-color: #212529;
+  --bs-btn-hover-bg: #495057;
+  --bs-btn-hover-border-color: #495057;
+}
+
+body {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  color: #212529;
+  letter-spacing: 0.1px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #212529;
+}
+
+/* Header/Footer Gradient */
+header, .navbar, footer {
+  background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%) !important;
+  color: #212529 !important;
+  border-radius: 0 0 1.5rem 1.5rem;
+  box-shadow: 0 2px 16px 0 rgba(33,147,176,0.15);
+}
+.navbar-brand, .navbar-nav .nav-link {
+  color: #212529 !important;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+.navbar-nav .nav-link.active, .navbar-nav .nav-link:focus, .navbar-nav .nav-link:hover {
+  color: #212529 !important;
+  text-decoration: underline;
+}
+
+/* Card & Form */
+.card, .dashboard-card, .form-control, .table, .alert {
+  border-radius: 1.5rem !important;
+  box-shadow: 0 6px 32px 0 rgba(33,37,41,0.1), 0 2px 8px 0 rgba(0,0,0,0.04);
+  border: 1px solid #e9ecef;
+  transition: box-shadow 0.25s, transform 0.18s;
+}
+.card-header {
+  background: #f8f9fa !important;
+  border-radius: 1.5rem 1.5rem 0 0 !important;
+  border: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #212529;
+}
+
+/* Card Hover */
+.dashboard-card.card-hover-primary:hover,
+.dashboard-card.card-hover-success:hover,
+.dashboard-card.card-hover-warning:hover,
+.dashboard-card.card-hover-info:hover {
+  box-shadow: 0 0 0 6px rgba(33,37,41,0.1), 0 8px 32px 0 rgba(33,37,41,0.15);
+  transform: translateY(-4px) scale(1.025);
+}
+
+/* Button */
+.btn, .btn-lg {
+  background: #212529 !important;
+  border-color: #212529 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 2rem !important;
+  padding: 0.75rem 2.2rem !important;
+  font-size: 1.1rem !important;
+  box-shadow: 0 2px 12px 0 rgba(33,37,41,0.15);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.18s;
+}
+.btn:hover, .btn:focus {
+  background: #495057 !important;
+  border-color: #495057 !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* Link */
+a, .link-primary, .text-primary {
+  color: #212529 !important;
+  transition: color 0.2s, text-decoration 0.2s;
+  text-decoration: none;
+}
+a:hover, .link-primary:hover, .text-primary:hover {
+  color: #495057 !important;
+  text-decoration: underline;
+}
+
+/* Table */
+.table {
+  border-radius: 1.2rem !important;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+}
+.table thead {
+  background: #f8f9fa;
+  font-weight: 700;
+  color: #212529;
+}
+.table th, .table td {
+  border: none !important;
+  vertical-align: middle;
+  font-size: 1.05rem;
+  color: #212529;
+}
+.table-hover tbody tr:hover, .dashboard-table tbody tr.table-row-hover:hover {
+  background: #f8f9fa !important;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+/* Form */
+.form-control {
+  border-radius: 1.2rem !important;
+  border: 1.5px solid #e9ecef;
+  font-size: 1.08rem;
+  padding: 0.7rem 1.2rem;
+  background: #ffffff;
+  color: #212529;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus {
+  border-color: #212529;
+  box-shadow: 0 0 0 0.2rem rgba(33,37,41,0.15);
+  background: #ffffff;
+  color: #212529;
+}
+.form-label {
+  font-weight: 700;
+  color: #212529;
+  letter-spacing: 0.2px;
+}
+
+/* Alert/Message */
+.alert-info, .alert-primary, .alert-success, .alert-warning {
+  background: linear-gradient(90deg, #f8f9fa 60%, #ffffff 100%) !important;
+  color: #212529 !important;
+  border: 1px solid #e9ecef;
+  font-weight: 600;
+  font-size: 1.08rem;
+  box-shadow: 0 2px 12px 0 rgba(33,37,41,0.08);
+}
+
+/* Loader, Misc */
+.loader, .spinner-border {
+  color: #212529 !important;
+}
+
+/* Responsive tweaks */
+@media (max-width: 767px) {
+  .card, .dashboard-card { border-radius: 1rem !important; }
+  header, .navbar, footer { border-radius: 0 0 1rem 1rem; }
+  .btn, .btn-lg { font-size: 1rem !important; padding: 0.6rem 1.2rem !important; }
+}
+
+.nav-link-custom { 
+  font-size: 1.08rem !important;
+  color: #212529 !important; 
+  border-radius: 1.2rem; 
+  padding: 0.5rem 1.2rem; 
+  transition: background 0.18s, color 0.18s; 
+}
+.nav-link-custom:hover, .nav-link-custom:focus, .nav-link-custom.active { 
+  background: rgba(255,255,255,0.1) !important; 
+  color: #212529 !important; 
+}
+
+.user-dropdown-align .dropdown-toggle { display: flex !important; align-items: center !important; }
+.user-dropdown-align .dropdown-toggle::after { margin-left: 0.5rem !important; vertical-align: middle !important; position: relative; top: 1px; }
+
+.dashboard-bg { 
+  background: linear-gradient(135deg, #ffffff 60%, #f8f9fa 100%); 
+  min-height: 100vh; 
+}
+.dashboard-stats-row { scrollbar-width: thin; }
+.dashboard-stats-row::-webkit-scrollbar { height: 6px; background: #e9ecef; }
+.dashboard-stats-row::-webkit-scrollbar-thumb { background: #212529; border-radius: 3px; }
+
+.gradient-card-blue {
+  background: linear-gradient(135deg, #495057 60%, #6c757d 100%);
+}
+.gradient-card-green {
+  background: linear-gradient(135deg, #343a40 60%, #495057 100%);
+}
+.gradient-card-orange {
+  background: linear-gradient(135deg, #6c757d 60%, #adb5bd 100%);
+}
+.gradient-card-pink {
+  background: linear-gradient(135deg, #212529 60%, #343a40 100%);
+}
+.gradient-card-cyan {
+  background: linear-gradient(135deg, #f8f9fa 60%, #e9ecef 100%);
+}
+
+/* Vehicle Management Specific Styles */
+.vehicle-list-screen .hero-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(33,37,41,0.1);
+}
+
+.vehicle-list-screen .hero-title {
+  color: #212529;
+  font-weight: 800;
+  font-size: 2.5rem;
+}
+
+.vehicle-list-screen .hero-subtitle {
+  color: #6c757d;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.vehicle-list-screen .stats-card {
+  background: linear-gradient(135deg, #212529 0%, #495057 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1.2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(33,37,41,0.2);
+}
+
+.vehicle-list-screen .stats-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.vehicle-list-screen .stats-label {
+  font-size: 1rem;
+  margin-bottom: 0;
+  opacity: 0.9;
+}
+
+.vehicle-list-screen .search-card {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(33,37,41,0.1);
+  box-shadow: 0 4px 20px rgba(33,37,41,0.08);
+}
+
+.vehicle-list-screen .search-input-wrapper {
+  position: relative;
+}
+
+.vehicle-list-screen .search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  z-index: 3;
+}
+
+.vehicle-list-screen .search-input {
+  padding-left: 2.5rem;
+}
+
+.vehicle-list-screen .table-card {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(33,37,41,0.1);
+  box-shadow: 0 4px 20px rgba(33,37,41,0.08);
+}
+
+.vehicle-list-screen .table-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #212529;
+  font-weight: 700;
+}
+
+.vehicle-list-screen .table-header-gradient {
+  background: linear-gradient(135deg, #212529 0%, #495057 100%);
+  color: white;
+}
+
+.vehicle-list-screen .table-header-gradient th {
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.vehicle-list-screen .table-row-hover:hover {
+  background: rgba(33,37,41,0.05) !important;
+  transform: scale(1.01);
+  transition: all 0.2s ease;
+}
+
+.vehicle-list-screen .license-plate {
+  color: #212529;
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.vehicle-list-screen .apartment-badge {
+  background: linear-gradient(135deg, #212529 0%, #495057 100%);
+  color: white;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1rem;
+}
+
+.vehicle-list-screen .action-buttons-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.vehicle-list-screen .gradient-btn {
+  background: linear-gradient(135deg, #212529 0%, #495057 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.vehicle-list-screen .gradient-btn:hover {
+  background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(33,37,41,0.2);
+}
+
+/* Vehicle Edit Screen Styles */
+.vehicle-edit-screen .hero-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(33,37,41,0.1);
+}
+
+.vehicle-edit-screen .hero-title {
+  color: #212529;
+  font-weight: 800;
+  font-size: 2.5rem;
+}
+
+.vehicle-edit-screen .hero-subtitle {
+  color: #6c757d;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.vehicle-edit-screen .form-card {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(33,37,41,0.1);
+  box-shadow: 0 4px 20px rgba(33,37,41,0.08);
+}
+
+.vehicle-edit-screen .form-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #212529;
+  font-weight: 700;
+}
+
+.vehicle-edit-screen .form-control-modern {
+  border: 2px solid #e9ecef;
+  border-radius: 1rem;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.vehicle-edit-screen .form-control-modern:focus {
+  border-color: #212529;
+  box-shadow: 0 0 0 0.2rem rgba(33,37,41,0.15);
+  background: #ffffff;
+}
+
+.vehicle-edit-screen .gradient-btn-outline {
+  border: 2px solid #212529;
+  color: #212529;
+  background: transparent;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.vehicle-edit-screen .gradient-btn-outline:hover {
+  background: #212529;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Vehicle Fee Screen Styles */
+.vehicle-fee-screen .hero-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(33,37,41,0.1);
+}
+
+.vehicle-fee-screen .hero-title {
+  color: #212529;
+  font-weight: 800;
+  font-size: 2.5rem;
+}
+
+.vehicle-fee-screen .hero-subtitle {
+  color: #6c757d;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.vehicle-fee-screen .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.vehicle-fee-screen .stat-item {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 1.5rem;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid rgba(33,37,41,0.1);
+}
+
+.vehicle-fee-screen .stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.vehicle-fee-screen .stat-label {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.vehicle-fee-screen .stat-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 1.5rem;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid rgba(33,37,41,0.1);
+}
+
+.vehicle-fee-screen .stat-card .stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.vehicle-fee-screen .stat-card .stat-label {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.vehicle-fee-screen .form-card {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(33,37,41,0.1);
+  box-shadow: 0 4px 20px rgba(33,37,41,0.08);
+  border-radius: 1.5rem;
+}
+
+.vehicle-fee-screen .form-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #212529;
+  font-weight: 700;
+  border-radius: 1.5rem 1.5rem 0 0;
+}
+
+.vehicle-fee-screen .gradient-btn {
+  background: linear-gradient(135deg, #212529 0%, #495057 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.vehicle-fee-screen .gradient-btn:hover {
+  background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(33,37,41,0.2);
+}
+
+.vehicle-fee-screen .gradient-btn-outline {
+  border: 2px solid #212529;
+  color: #212529;
+  background: transparent;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.vehicle-fee-screen .gradient-btn-outline:hover {
+  background: #212529;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.vehicle-fee-screen .apartment-badge {
+  background: linear-gradient(135deg, #212529 0%, #495057 100%);
+  color: white;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1rem;
+}
+
+/* Facility Management Styles */
+.facility-list-screen .hero-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.facility-list-screen .hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #212529;
+  margin-bottom: 0.5rem;
+}
+
+.facility-list-screen .hero-subtitle {
+  font-size: 1.1rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.facility-form-screen .hero-section,
+.facility-maintenance-screen .hero-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.facility-form-screen .hero-title,
+.facility-maintenance-screen .hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #212529;
+  margin-bottom: 0.5rem;
+}
+
+.facility-form-screen .hero-subtitle,
+.facility-maintenance-screen .hero-subtitle {
+  font-size: 1.1rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.gradient-btn-primary {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  border: none;
+  color: white !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.gradient-btn-primary:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+}
+
+.gradient-btn-success {
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+  border: none;
+  color: white !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.gradient-btn-success:hover {
+  background: linear-gradient(135deg, #1e7e34 0%, #155724 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(40,167,69,0.3);
+} 
