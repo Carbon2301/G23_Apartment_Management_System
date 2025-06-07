@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: apartment_app
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      MONGO_URI: mongodb://mongo:27017/bluemoon_apartment
+      JWT_SECRET: your_jwt_secret_here
+    depends_on:
+      - mongo
+    volumes:
+      - .:/usr/src/app
+    command: npm start  # hoặc lệnh bạn dùng để chạy app
+
+  mongo:
+    image: mongo:6.0
+    container_name: apartment_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
