@@ -26,16 +26,8 @@ Hệ thống quản lý chung cư BlueMoon - Một ứng dụng web toàn diện
 ### 👥 Tài khoản mặc định
 ```
 Admin:
-- Email: admin@bluemoon.com
+- Email: admin
 - Password: admin123
-
-Manager:
-- Email: manager@bluemoon.com  
-- Password: manager123
-
-Accountant:
-- Email: accountant@bluemoon.com
-- Password: accountant123
 ```
 
 ## ✨ Tính năng chính
@@ -167,7 +159,7 @@ G23_Apartment_Management_Systems/
 ### Phần mềm cần thiết
 - **Node.js** >= 16.0.0
 - **npm** >= 8.0.0 hoặc **yarn** >= 1.22.0
-- **MongoDB** >= 5.0.0
+- **Docker Desktop** 
 - **Git** >= 2.30.0
 
 ### Hệ điều hành hỗ trợ
@@ -183,40 +175,7 @@ G23_Apartment_Management_Systems/
 git clone https://github.com/your-username/G23_Apartment_Management_Systems.git
 cd G23_Apartment_Management_Systems
 ```
-
-### 2. Cài đặt MongoDB
-
-#### Windows:
-1. Tải MongoDB Community Server từ [mongodb.com](https://www.mongodb.com/try/download/community)
-2. Cài đặt và khởi động MongoDB service
-3. MongoDB sẽ chạy trên `mongodb://localhost:27017`
-
-#### macOS:
-```bash
-# Sử dụng Homebrew
-brew tap mongodb/brew
-brew install mongodb-community
-brew services start mongodb/brew/mongodb-community
-```
-
-#### Ubuntu:
-```bash
-# Import public key
-wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
-
-# Add MongoDB repository
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
-
-# Install MongoDB
-sudo apt-get update
-sudo apt-get install -y mongodb-org
-
-# Start MongoDB
-sudo systemctl start mongod
-sudo systemctl enable mongod
-```
-
-### 3. Cài đặt Backend
+### 2. Cài đặt Backend
 
 ```bash
 # Di chuyển vào thư mục backend
@@ -225,39 +184,31 @@ cd backend
 # Cài đặt dependencies
 npm install
 
-# Tạo file .env
-cp .env.example .env
+# Cài đặt docker
+docker compose
 ```
-
-#### Cấu hình file `.env`:
-```env
-# Database
-MONGO_URI=mongodb://localhost:27017/bluemoon_apartment
-MONGODB_URI=mongodb://localhost:27017/bluemoon_apartment
-
-# Server
-PORT=5001
-NODE_ENV=development
-
-# JWT
-JWT_SECRET=your-super-secret-jwt-key-here
-
-# Frontend URL (for CORS)
-FRONTEND_URL=http://localhost:3000
+Chuyển qua terminal mới:
+```bash
+cd backend
+docker-compose up 
 ```
 
 #### Khởi tạo database với dữ liệu mẫu:
 ```bash
 # Chạy tất cả scripts setup (tạo database, seed data)
+cd backend 
+node createAdminUser.js
 npm run setup
 ```
 
 #### Chạy backend server:
 ```bash
 # Development mode (auto-restart)
+cd backend
 npm run dev
 
 # Production mode
+cd backend
 npm start
 ```
 
@@ -274,9 +225,6 @@ cd frontend
 # Cài đặt dependencies
 npm install
 
-# Tạo file .env (nếu cần)
-echo "REACT_APP_API_URL=http://localhost:5001" > .env
-
 # Chạy frontend
 npm start
 ```
@@ -287,72 +235,8 @@ Frontend sẽ chạy tại: `http://localhost:3000`
 
 1. Mở trình duyệt và truy cập: `http://localhost:3000`
 2. Đăng nhập bằng tài khoản admin:
-   - Email: `admin@bluemoon.com`
+   - Email: `admin`
    - Password: `admin123`
-
-## ⚙️ Cấu hình
-
-### Backend Environment Variables
-
-```env
-# Database Configuration
-MONGO_URI=mongodb://localhost:27017/bluemoon_apartment
-MONGODB_URI=mongodb://localhost:27017/bluemoon_apartment
-
-# Server Configuration
-PORT=5001
-NODE_ENV=development
-
-# Security
-JWT_SECRET=your-super-secret-jwt-key-here
-
-# CORS
-FRONTEND_URL=http://localhost:3000
-
-# Email Configuration (optional)
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-app-password
-```
-
-### Frontend Environment Variables
-
-```env
-# API Configuration
-REACT_APP_API_URL=http://localhost:5001
-
-# App Configuration
-REACT_APP_NAME=BlueMoon Apartment Management
-REACT_APP_VERSION=1.0.0
-```
-
-## 🐳 Chạy với Docker
-
-### 1. Sử dụng Docker Compose
-
-```bash
-# Chạy toàn bộ stack (MongoDB + Backend + Frontend)
-docker-compose up -d
-
-# Xem logs
-docker-compose logs -f
-
-# Dừng services
-docker-compose down
-```
-
-### 2. Build riêng từng service
-
-```bash
-# Build backend
-cd backend
-docker build -t apartment-backend .
-
-# Build frontend
-cd frontend
-docker build -t apartment-frontend .
-```
 
 ## 📚 API Documentation
 
@@ -440,7 +324,7 @@ cd frontend
 npm run test:components
 ```
 
-## 🚀 Deployment
+<!-- ## 🚀 Deployment
 
 ### Deploy lên Vercel
 
@@ -479,44 +363,7 @@ npm run test:components
    heroku create your-app-frontend
    heroku config:set REACT_APP_API_URL=your-backend-url
    git push heroku main
-   ```
-
-## 🛠️ Scripts có sẵn
-
-### Backend Scripts
-
-```bash
-npm start              # Chạy production server
-npm run dev            # Chạy development server với nodemon
-npm run setup          # Khởi tạo database với dữ liệu mẫu
-npm test               # Chạy tests
-npm run test:watch     # Chạy tests ở watch mode
-```
-
-### Frontend Scripts
-
-```bash
-npm start              # Chạy development server
-npm run build          # Build production
-npm test               # Chạy tests
-npm run eject          # Eject từ Create React App
-```
-
-### Database Scripts
-
-```bash
-# Setup scripts
-node scripts/setup/clearDatabase.js      # Xóa toàn bộ dữ liệu
-node scripts/setup/setupDatabase.js      # Tạo dữ liệu mẫu
-
-# Seed scripts
-node scripts/seed/seedFacilities.js      # Thêm dữ liệu tiện ích
-node scripts/seed/setHouseholdHeads.js   # Thiết lập chủ hộ
-
-# Maintenance scripts
-node scripts/maintenance/paymentStats.js # Thống kê thanh toán
-node scripts/maintenance/fixPaymentDates.js # Sửa ngày thanh toán
-```
+   ``` -->
 
 ## 🤝 Đóng góp
 
@@ -539,7 +386,7 @@ Chúng tôi hoan nghênh mọi đóng góp! Vui lòng đọc [CONTRIBUTING.md](C
 
 ## 📝 Changelog
 
-### Version 1.0.0 (2024-12-15)
+### Version 1.0.0 (2025-06-15)
 - ✨ Tính năng quản lý hộ gia đình và cư dân
 - ✨ Hệ thống thanh toán và quản lý phí
 - ✨ Dashboard và báo cáo thống kê
@@ -549,28 +396,7 @@ Chúng tôi hoan nghênh mọi đóng góp! Vui lòng đọc [CONTRIBUTING.md](C
 
 ## 📄 Giấy phép
 
-Dự án này được phân phối dưới giấy phép MIT. Xem file [LICENSE](LICENSE) để biết thêm chi tiết.
-
-## 👥 Nhóm phát triển
-
-- **Nhóm G23** - Phát triển và bảo trì
-- **Email**: g23.apartment@gmail.com
-
-## 🆘 Hỗ trợ
-
-Nếu bạn gặp vấn đề hoặc có câu hỏi:
-
-1. Kiểm tra [Issues](https://github.com/your-username/G23_Apartment_Management_Systems/issues)
-2. Tạo issue mới nếu chưa có
-3. Liên hệ qua email: g23.apartment@gmail.com
-
-## 🙏 Lời cảm ơn
-
-- [React.js](https://reactjs.org/) - UI Library
-- [Node.js](https://nodejs.org/) - Runtime Environment
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Bootstrap](https://getbootstrap.com/) - CSS Framework
-- [Chart.js](https://www.chartjs.org/) - Data Visualization
+Dự án này được phân phối dưới giấy phép MIT. 
 
 ---
 
